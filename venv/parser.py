@@ -6,24 +6,20 @@ import Objects as objects
 
 
 def createObject(type, attrs, objs):
-    if(type == 'Object'):
+    if type == 'Object':
         return objects.Object(attrs[0], attrs[1],True,  attrs[2], attrs[3])
-    if (type == 'Goal'):
+    if type == 'Goal':
         return objects.Goal(attrs[0], attrs[1], True, attrs[2], attrs[3])
-    elif (type == 'Player'):
+    elif type == 'Player':
         return objects.Character(attrs[0], attrs[1],True, attrs[2], attrs[3])
-    elif (type == 'Enemy'):
-        return objects.Enemies(attrs[0], attrs[1],True, attrs[2], attrs[3])
-    elif (type == 'Level'):
+    elif type == 'Mob':
+        return objects.Mobs(attrs[0], attrs[1],True, attrs[2], attrs[3])
+    elif type == 'Level':
         return console.Level(attrs[0], objs) # Len = 1 Behaviour is 6
 
 
-tokens = ['TYPENAME', 'LPAR',
-          'RPAR', 'COMMA',
-          'INT', 'FLOAT',
-          'ID', 'DOUBLEPOINT',
-          'WHITESPACE', 'BOOL',
-          'LEVEL', 'DELIMITER']
+tokens = ['TYPENAME', 'LPAREN', 'RPAREN', 'COMMA', 'INT', 'FLOAT', 'DELIMITER', 'ID', 'DOUBLEPOINT',
+          'WHITESPACE', 'BOOL', 'LEVEL']
 
 reserved = {
     'Frame':'TYPENAME',
@@ -31,7 +27,7 @@ reserved = {
     'Object':'TYPENAME',
     'Level':'LEVEL',
     'Behaviour' : 'TYPENAME',
-    'Enemy' : 'TYPENAME',
+    'Mob' : 'TYPENAME',
     'Goal' : 'TYPENAME',
     'True' : 'BOOL',
     'False' : 'BOOL',
@@ -43,24 +39,16 @@ behaviourConsts = {
     'DEFAULT':'BEHAVIORCONST'
 }
 
-
-t_LPAR = r'\('
-t_RPAR = r'\)'
+t_ignore = r' '
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
 t_COMMA = r','
 t_DOUBLEPOINT = r':'
-
-t_ignore = r' '
 
 
 def t_WHITESPACE(t):
     r'\s+'
     pass
-
-
-def t_INT(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
 
 
 def t_FLOAT(t):
@@ -69,16 +57,21 @@ def t_FLOAT(t):
     return t
 
 
+def t_INT(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+
 def t_ID(t):
     r'[a-zA-Z\./]+'
     t.type = reserved.get(t.value, 'ID')
-    if(t.type == 'BOOL'):
-        if(t.value == 'True'):
+    if t.type == 'BOOL':
+        if t.value == 'True':
             t.value = True
         else:
             t.value = False
     return t
-
 
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -90,17 +83,17 @@ lexer = lex.lex()
 
 def p_main(p):
     '''
-    Budibak : levellist
+    P2D : levellist
     '''
     head = None
-    if(len(p[1]) != 0):
+    if len(p[1]) != 0:
         head = console.Node(p[1][0], None)
         current = head
         i = 1;
-        while(i<len(p[1])):
+        while i<len(p[1]):
             current.set_next(console.Node(p[1][i], None))
             current = current.get_next()
-            i+=1
+            i += 1
 
     console2 = console.Console()
     console2.set_current(head)
@@ -120,7 +113,7 @@ def p_levellist(p):
 
 def p_level(p):
     '''
-    level : LEVEL LPAR listattr RPAR DOUBLEPOINT typelist DELIMITER
+    level : LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
     '''
 
     if(not checkAttributes('Level', p[3])):
@@ -130,9 +123,10 @@ def p_level(p):
 
 def p_main_expression(p):
     '''
-    Budibak : typelist
+    P2D : typelist
     '''
-    print("La lista de todos los objetos es:")
+    print("List contains all objects. Each object has (type, list of arguments, list of objects created below if any)."
+          " List of objects is recursive")
     print(p[1])
 
 
@@ -149,10 +143,10 @@ def p_typelist(p):
 
 def p_typedeclar(p):
     '''
-    typedeclar : TYPENAME LPAR empty RPAR DOUBLEPOINT typelist DELIMITER
-                | TYPENAME LPAR empty RPAR
-                | TYPENAME LPAR listattr RPAR DOUBLEPOINT typelist DELIMITER
-                | TYPENAME LPAR listattr RPAR
+    typedeclar : TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
+                | TYPENAME LPAREN empty RPAREN
+                | TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
+                | TYPENAME LPAREN listattr RPAREN
     '''
     if not checkAttributes(p[1], p[3]):
          raise Exception('Invalid attributes for type', p[1])
@@ -164,12 +158,12 @@ def p_typedeclar(p):
 
 def p_simpletypedeclar(p):
     '''
-    simpletypedeclar : TYPENAME LPAR listattr RPAR
+    simpletypedeclar : TYPENAME LPAREN listattr RPAREN
     '''
-    if(p[1] != 'Behaviour'):
+    if p[1] != 'Behaviour':
         raise Exception('Invalid entity for outer entity')
 
-    if(not checkAttributes('Behaviour', p[3])):
+    if not checkAttributes('Behaviour', p[3]):
         raise Exception('Invalid attributes for type Behaviour')
     x = p[3][3]
     reflect = False
@@ -202,7 +196,6 @@ def p_attr(p):
     '''
     p[0] = p[1]
 
-
 def p_empty(p):
 
     '''
@@ -215,73 +208,70 @@ def run(p):
     if type(p) == tuple:
         print('Tuple found')
         if p[0] == 'Frame':
-            #Code Goes Here
             print('Frame Code!')
     else: print('No Code')
 
 
 def checkAttributes(type, listOfAttributes):
-    print('Checking.../n')
+    print('Checking...')
     print(type + ' Found...')
 
-    if(type == 'Player' or type == 'Object' or type == 'Mob' or type == 'Goal') :
+    if type == 'Player' or type == 'Object' or type == 'Mob' or type == 'Goal':
         print('Checking Player Len')
-        if (len(listOfAttributes) == 4):
+        if len(listOfAttributes) == 4:
             print('Checking Player x')
-            if isinstance( listOfAttributes[0] , int) != True :
+            if not isinstance(listOfAttributes[0], int):
                 print('x failed')
                 return False
             print('Checking Player y')
-            if isinstance( listOfAttributes[1] , int) != True:
+            if not isinstance(listOfAttributes[1], int):
                 return False
             print('Checking Player Icon')
-            if isinstance( listOfAttributes[2] , str) != True:
-                print(str(listOfAttributes[2]._class.name_))
-                print('icon failed')
+            if not isinstance(listOfAttributes[2], str):
+                print(str(listOfAttributes[2].__class__.__name__))
+                print('Icon failed')
                 return False
             print('Checking Player Behaviour')
-            print(str(listOfAttributes[3]._class.name_))
-            if (isinstance(listOfAttributes[3], behaviour.Behaviour) != True):
-                print(str(listOfAttributes[3]._class.name_))
+            print(str(listOfAttributes[3].__class__.__name__))
+            if not isinstance(listOfAttributes[3], behaviour.Behaviour):
+                print(str(listOfAttributes[3].__class__.__name__))
                 print('Player Check Failed')
                 return False
         else:
-            print('Player Check Failed end')
+            print('End Player Check Failed')
             return False
 
-
-
-    if(type == 'Frame'):
-        #print('Frame Found...\n')
-        print('List has length ' + str(len(listOfAttributes)))
-        if(len(listOfAttributes) == 2):
+    if type == 'Frame':
+        print('List length: ' + str(len(listOfAttributes)))
+        if len(listOfAttributes) == 2:
             print('Checking Frame: ' + str(listOfAttributes[0]) + ' ' + str(listOfAttributes[1]))
-            if (isinstance(listOfAttributes[0],int)) == False:
+            if not (isinstance(listOfAttributes[0], int)):
                 return False
-            if (isinstance(listOfAttributes[1],int)) == False:
+            if not (isinstance(listOfAttributes[1], int)):
                 print('False Found')
                 return False
         else:
             return False
-    if(type == 'Level'):
-        if (len(listOfAttributes) == 1):
-            if isinstance(listOfAttributes[0], str) != True:
+    if type == 'Level':
+        if len(listOfAttributes) == 1:
+            if not isinstance(listOfAttributes[0], str):
                     print('Level Name check Failed')
                     return False
         else:
-            return False
+            return false
 
-    if (type == 'Behaviour'):
-        if (len(listOfAttributes) == 5):
-            if isinstance(listOfAttributes[0], int) != True:
+    if type == 'Behaviour':
+        if len(listOfAttributes) == 5:
+            if not isinstance(listOfAttributes[0], int):
                 return False
-            if isinstance(listOfAttributes[1], int) != True:
+            if not isinstance(listOfAttributes[1], int):
                 return False
-            if isinstance(listOfAttributes[2], float) != True:
+            if not isinstance(listOfAttributes[2], float):
                 return False
-            if isinstance( listOfAttributes[3] , str) != True or behaviourConsts.get(listOfAttributes[3]) != 'BEHAVIORCONST':
+            if isinstance(listOfAttributes[3], str) != True \
+                    or behaviourConsts.get(listOfAttributes[3]) != 'BEHAVIORCONST':
                 return False
-            if isinstance( listOfAttributes[4] , bool) != True:
+            if not isinstance(listOfAttributes[4], bool):
                 return False
         else:
             return False
@@ -290,7 +280,7 @@ def checkAttributes(type, listOfAttributes):
 
 parser = yacc.yacc(debug=1)
 
-filename = input('File: ')
+filename = input('Write your Level File: ')
 
 file = open(filename, 'r')
 
@@ -305,3 +295,10 @@ while True:
     if not tok:
         break
     print(tok)
+
+
+
+
+
+
+
