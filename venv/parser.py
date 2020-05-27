@@ -84,7 +84,7 @@ lexer = lex.lex()
 
 def p_main(p):
     '''
-    P2D : levellist
+    Budibak : levellist
     '''
     head = None
     if len(p[1]) != 0:
