@@ -19,9 +19,10 @@ Levels: The place where all the objects are stored.
 Level Attribute: Level(Name(String))
 
 Player: The main character.  It’s the character that the user controls. The character moves with these keys: 
-   W: moves up 
+  
+  W: moves up 
    
-   A: moves left
+  A: moves left
    
    S: moves down 
    
