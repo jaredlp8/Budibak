@@ -11,7 +11,7 @@ Rule 1     P2D -> levellist
 Rule 2     levellist -> level levellist
 Rule 3     levellist -> level
 Rule 4     level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-Rule 5     P2D -> typelist
+Rule 5     Budibak -> typelist
 Rule 6     typelist -> typedeclar typelist
 Rule 7     typelist -> typedeclar
 Rule 8     typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
@@ -46,6 +46,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
+Budibak              : 
 P2D                  : 0
 attr                 : 13 14
 empty                : 8 9
@@ -62,25 +63,15 @@ state 0
 
     (0) S' -> . P2D
     (1) P2D -> . levellist
-    (5) P2D -> . typelist
     (2) levellist -> . level levellist
     (3) levellist -> . level
-    (6) typelist -> . typedeclar typelist
-    (7) typelist -> . typedeclar
     (4) level -> . LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-    (8) typedeclar -> . TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
-    (9) typedeclar -> . TYPENAME LPAREN empty RPAREN
-    (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
 
-    LEVEL           shift and go to state 6
-    TYPENAME        shift and go to state 7
+    LEVEL           shift and go to state 4
 
     P2D                            shift and go to state 1
     levellist                      shift and go to state 2
-    typelist                       shift and go to state 3
-    level                          shift and go to state 4
-    typedeclar                     shift and go to state 5
+    level                          shift and go to state 3
 
 state 1
 
@@ -97,13 +88,6 @@ state 2
 
 state 3
 
-    (5) P2D -> typelist .
-
-    $end            reduce using rule 5 (P2D -> typelist .)
-
-
-state 4
-
     (2) levellist -> level . levellist
     (3) levellist -> level .
     (2) levellist -> . level levellist
@@ -111,62 +95,26 @@ state 4
     (4) level -> . LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
 
     $end            reduce using rule 3 (levellist -> level .)
-    LEVEL           shift and go to state 6
+    LEVEL           shift and go to state 4
 
-    level                          shift and go to state 4
-    levellist                      shift and go to state 8
+    level                          shift and go to state 3
+    levellist                      shift and go to state 5
 
-state 5
-
-    (6) typelist -> typedeclar . typelist
-    (7) typelist -> typedeclar .
-    (6) typelist -> . typedeclar typelist
-    (7) typelist -> . typedeclar
-    (8) typedeclar -> . TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
-    (9) typedeclar -> . TYPENAME LPAREN empty RPAREN
-    (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
-
-    $end            reduce using rule 7 (typelist -> typedeclar .)
-    DELIMITER       reduce using rule 7 (typelist -> typedeclar .)
-    TYPENAME        shift and go to state 7
-
-    typedeclar                     shift and go to state 5
-    typelist                       shift and go to state 9
-
-state 6
+state 4
 
     (4) level -> LEVEL . LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
 
-    LPAREN          shift and go to state 10
+    LPAREN          shift and go to state 6
 
 
-state 7
-
-    (8) typedeclar -> TYPENAME . LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
-    (9) typedeclar -> TYPENAME . LPAREN empty RPAREN
-    (10) typedeclar -> TYPENAME . LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> TYPENAME . LPAREN listattr RPAREN
-
-    LPAREN          shift and go to state 11
-
-
-state 8
+state 5
 
     (2) levellist -> level levellist .
 
     $end            reduce using rule 2 (levellist -> level levellist .)
 
 
-state 9
-
-    (6) typelist -> typedeclar typelist .
-
-    $end            reduce using rule 6 (typelist -> typedeclar typelist .)
-    DELIMITER       reduce using rule 6 (typelist -> typedeclar typelist .)
-
-
-state 10
+state 6
 
     (4) level -> LEVEL LPAREN . listattr RPAREN DOUBLEPOINT typelist DELIMITER
     (13) listattr -> . attr COMMA listattr
@@ -178,17 +126,217 @@ state 10
     (19) attr -> . ID
     (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
 
-    BOOL            shift and go to state 15
-    FLOAT           shift and go to state 16
-    INT             shift and go to state 17
-    ID              shift and go to state 18
-    TYPENAME        shift and go to state 19
+    BOOL            shift and go to state 10
+    FLOAT           shift and go to state 11
+    INT             shift and go to state 12
+    ID              shift and go to state 13
+    TYPENAME        shift and go to state 14
 
-    listattr                       shift and go to state 12
-    attr                           shift and go to state 13
-    simpletypedeclar               shift and go to state 14
+    listattr                       shift and go to state 7
+    attr                           shift and go to state 8
+    simpletypedeclar               shift and go to state 9
+
+state 7
+
+    (4) level -> LEVEL LPAREN listattr . RPAREN DOUBLEPOINT typelist DELIMITER
+
+    RPAREN          shift and go to state 15
+
+
+state 8
+
+    (13) listattr -> attr . COMMA listattr
+    (14) listattr -> attr .
+
+    COMMA           shift and go to state 16
+    RPAREN          reduce using rule 14 (listattr -> attr .)
+
+
+state 9
+
+    (15) attr -> simpletypedeclar .
+
+    COMMA           reduce using rule 15 (attr -> simpletypedeclar .)
+    RPAREN          reduce using rule 15 (attr -> simpletypedeclar .)
+
+
+state 10
+
+    (16) attr -> BOOL .
+
+    COMMA           reduce using rule 16 (attr -> BOOL .)
+    RPAREN          reduce using rule 16 (attr -> BOOL .)
+
 
 state 11
+
+    (17) attr -> FLOAT .
+
+    COMMA           reduce using rule 17 (attr -> FLOAT .)
+    RPAREN          reduce using rule 17 (attr -> FLOAT .)
+
+
+state 12
+
+    (18) attr -> INT .
+
+    COMMA           reduce using rule 18 (attr -> INT .)
+    RPAREN          reduce using rule 18 (attr -> INT .)
+
+
+state 13
+
+    (19) attr -> ID .
+
+    COMMA           reduce using rule 19 (attr -> ID .)
+    RPAREN          reduce using rule 19 (attr -> ID .)
+
+
+state 14
+
+    (12) simpletypedeclar -> TYPENAME . LPAREN listattr RPAREN
+
+    LPAREN          shift and go to state 17
+
+
+state 15
+
+    (4) level -> LEVEL LPAREN listattr RPAREN . DOUBLEPOINT typelist DELIMITER
+
+    DOUBLEPOINT     shift and go to state 18
+
+
+state 16
+
+    (13) listattr -> attr COMMA . listattr
+    (13) listattr -> . attr COMMA listattr
+    (14) listattr -> . attr
+    (15) attr -> . simpletypedeclar
+    (16) attr -> . BOOL
+    (17) attr -> . FLOAT
+    (18) attr -> . INT
+    (19) attr -> . ID
+    (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
+
+    BOOL            shift and go to state 10
+    FLOAT           shift and go to state 11
+    INT             shift and go to state 12
+    ID              shift and go to state 13
+    TYPENAME        shift and go to state 14
+
+    attr                           shift and go to state 8
+    listattr                       shift and go to state 19
+    simpletypedeclar               shift and go to state 9
+
+state 17
+
+    (12) simpletypedeclar -> TYPENAME LPAREN . listattr RPAREN
+    (13) listattr -> . attr COMMA listattr
+    (14) listattr -> . attr
+    (15) attr -> . simpletypedeclar
+    (16) attr -> . BOOL
+    (17) attr -> . FLOAT
+    (18) attr -> . INT
+    (19) attr -> . ID
+    (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
+
+    BOOL            shift and go to state 10
+    FLOAT           shift and go to state 11
+    INT             shift and go to state 12
+    ID              shift and go to state 13
+    TYPENAME        shift and go to state 14
+
+    listattr                       shift and go to state 20
+    attr                           shift and go to state 8
+    simpletypedeclar               shift and go to state 9
+
+state 18
+
+    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT . typelist DELIMITER
+    (6) typelist -> . typedeclar typelist
+    (7) typelist -> . typedeclar
+    (8) typedeclar -> . TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
+    (9) typedeclar -> . TYPENAME LPAREN empty RPAREN
+    (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
+    (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
+
+    TYPENAME        shift and go to state 23
+
+    typelist                       shift and go to state 21
+    typedeclar                     shift and go to state 22
+
+state 19
+
+    (13) listattr -> attr COMMA listattr .
+
+    RPAREN          reduce using rule 13 (listattr -> attr COMMA listattr .)
+
+
+state 20
+
+    (12) simpletypedeclar -> TYPENAME LPAREN listattr . RPAREN
+
+    RPAREN          shift and go to state 24
+
+
+state 21
+
+    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist . DELIMITER
+
+    DELIMITER       shift and go to state 25
+
+
+state 22
+
+    (6) typelist -> typedeclar . typelist
+    (7) typelist -> typedeclar .
+    (6) typelist -> . typedeclar typelist
+    (7) typelist -> . typedeclar
+    (8) typedeclar -> . TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
+    (9) typedeclar -> . TYPENAME LPAREN empty RPAREN
+    (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
+    (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
+
+    DELIMITER       reduce using rule 7 (typelist -> typedeclar .)
+    TYPENAME        shift and go to state 23
+
+    typedeclar                     shift and go to state 22
+    typelist                       shift and go to state 26
+
+state 23
+
+    (8) typedeclar -> TYPENAME . LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
+    (9) typedeclar -> TYPENAME . LPAREN empty RPAREN
+    (10) typedeclar -> TYPENAME . LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
+    (11) typedeclar -> TYPENAME . LPAREN listattr RPAREN
+
+    LPAREN          shift and go to state 27
+
+
+state 24
+
+    (12) simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .
+
+    COMMA           reduce using rule 12 (simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .)
+    RPAREN          reduce using rule 12 (simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .)
+
+
+state 25
+
+    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .
+
+    LEVEL           reduce using rule 4 (level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
+    $end            reduce using rule 4 (level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
+
+
+state 26
+
+    (6) typelist -> typedeclar typelist .
+
+    DELIMITER       reduce using rule 6 (typelist -> typedeclar typelist .)
+
+
+state 27
 
     (8) typedeclar -> TYPENAME LPAREN . empty RPAREN DOUBLEPOINT typelist DELIMITER
     (9) typedeclar -> TYPENAME LPAREN . empty RPAREN
@@ -205,199 +353,54 @@ state 11
     (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
 
     RPAREN          reduce using rule 20 (empty -> .)
-    BOOL            shift and go to state 15
-    FLOAT           shift and go to state 16
-    INT             shift and go to state 17
-    ID              shift and go to state 18
-    TYPENAME        shift and go to state 19
+    BOOL            shift and go to state 10
+    FLOAT           shift and go to state 11
+    INT             shift and go to state 12
+    ID              shift and go to state 13
+    TYPENAME        shift and go to state 14
 
-    empty                          shift and go to state 20
-    listattr                       shift and go to state 21
-    attr                           shift and go to state 13
-    simpletypedeclar               shift and go to state 14
+    empty                          shift and go to state 28
+    listattr                       shift and go to state 29
+    attr                           shift and go to state 8
+    simpletypedeclar               shift and go to state 9
 
-state 12
-
-    (4) level -> LEVEL LPAREN listattr . RPAREN DOUBLEPOINT typelist DELIMITER
-
-    RPAREN          shift and go to state 22
-
-
-state 13
-
-    (13) listattr -> attr . COMMA listattr
-    (14) listattr -> attr .
-
-    COMMA           shift and go to state 23
-    RPAREN          reduce using rule 14 (listattr -> attr .)
-
-
-state 14
-
-    (15) attr -> simpletypedeclar .
-
-    COMMA           reduce using rule 15 (attr -> simpletypedeclar .)
-    RPAREN          reduce using rule 15 (attr -> simpletypedeclar .)
-
-
-state 15
-
-    (16) attr -> BOOL .
-
-    COMMA           reduce using rule 16 (attr -> BOOL .)
-    RPAREN          reduce using rule 16 (attr -> BOOL .)
-
-
-state 16
-
-    (17) attr -> FLOAT .
-
-    COMMA           reduce using rule 17 (attr -> FLOAT .)
-    RPAREN          reduce using rule 17 (attr -> FLOAT .)
-
-
-state 17
-
-    (18) attr -> INT .
-
-    COMMA           reduce using rule 18 (attr -> INT .)
-    RPAREN          reduce using rule 18 (attr -> INT .)
-
-
-state 18
-
-    (19) attr -> ID .
-
-    COMMA           reduce using rule 19 (attr -> ID .)
-    RPAREN          reduce using rule 19 (attr -> ID .)
-
-
-state 19
-
-    (12) simpletypedeclar -> TYPENAME . LPAREN listattr RPAREN
-
-    LPAREN          shift and go to state 24
-
-
-state 20
+state 28
 
     (8) typedeclar -> TYPENAME LPAREN empty . RPAREN DOUBLEPOINT typelist DELIMITER
     (9) typedeclar -> TYPENAME LPAREN empty . RPAREN
 
-    RPAREN          shift and go to state 25
-
-
-state 21
-
-    (10) typedeclar -> TYPENAME LPAREN listattr . RPAREN DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> TYPENAME LPAREN listattr . RPAREN
-
-    RPAREN          shift and go to state 26
-
-
-state 22
-
-    (4) level -> LEVEL LPAREN listattr RPAREN . DOUBLEPOINT typelist DELIMITER
-
-    DOUBLEPOINT     shift and go to state 27
-
-
-state 23
-
-    (13) listattr -> attr COMMA . listattr
-    (13) listattr -> . attr COMMA listattr
-    (14) listattr -> . attr
-    (15) attr -> . simpletypedeclar
-    (16) attr -> . BOOL
-    (17) attr -> . FLOAT
-    (18) attr -> . INT
-    (19) attr -> . ID
-    (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
-
-    BOOL            shift and go to state 15
-    FLOAT           shift and go to state 16
-    INT             shift and go to state 17
-    ID              shift and go to state 18
-    TYPENAME        shift and go to state 19
-
-    attr                           shift and go to state 13
-    listattr                       shift and go to state 28
-    simpletypedeclar               shift and go to state 14
-
-state 24
-
-    (12) simpletypedeclar -> TYPENAME LPAREN . listattr RPAREN
-    (13) listattr -> . attr COMMA listattr
-    (14) listattr -> . attr
-    (15) attr -> . simpletypedeclar
-    (16) attr -> . BOOL
-    (17) attr -> . FLOAT
-    (18) attr -> . INT
-    (19) attr -> . ID
-    (12) simpletypedeclar -> . TYPENAME LPAREN listattr RPAREN
-
-    BOOL            shift and go to state 15
-    FLOAT           shift and go to state 16
-    INT             shift and go to state 17
-    ID              shift and go to state 18
-    TYPENAME        shift and go to state 19
-
-    listattr                       shift and go to state 29
-    attr                           shift and go to state 13
-    simpletypedeclar               shift and go to state 14
-
-state 25
-
-    (8) typedeclar -> TYPENAME LPAREN empty RPAREN . DOUBLEPOINT typelist DELIMITER
-    (9) typedeclar -> TYPENAME LPAREN empty RPAREN .
-
-    DOUBLEPOINT     shift and go to state 30
-    TYPENAME        reduce using rule 9 (typedeclar -> TYPENAME LPAREN empty RPAREN .)
-    $end            reduce using rule 9 (typedeclar -> TYPENAME LPAREN empty RPAREN .)
-    DELIMITER       reduce using rule 9 (typedeclar -> TYPENAME LPAREN empty RPAREN .)
-
-
-state 26
-
-    (10) typedeclar -> TYPENAME LPAREN listattr RPAREN . DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> TYPENAME LPAREN listattr RPAREN .
-
-    DOUBLEPOINT     shift and go to state 31
-    TYPENAME        reduce using rule 11 (typedeclar -> TYPENAME LPAREN listattr RPAREN .)
-    $end            reduce using rule 11 (typedeclar -> TYPENAME LPAREN listattr RPAREN .)
-    DELIMITER       reduce using rule 11 (typedeclar -> TYPENAME LPAREN listattr RPAREN .)
-
-
-state 27
-
-    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT . typelist DELIMITER
-    (6) typelist -> . typedeclar typelist
-    (7) typelist -> . typedeclar
-    (8) typedeclar -> . TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER
-    (9) typedeclar -> . TYPENAME LPAREN empty RPAREN
-    (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
-    (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
-
-    TYPENAME        shift and go to state 7
-
-    typelist                       shift and go to state 32
-    typedeclar                     shift and go to state 5
-
-state 28
-
-    (13) listattr -> attr COMMA listattr .
-
-    RPAREN          reduce using rule 13 (listattr -> attr COMMA listattr .)
+    RPAREN          shift and go to state 30
 
 
 state 29
 
-    (12) simpletypedeclar -> TYPENAME LPAREN listattr . RPAREN
+    (10) typedeclar -> TYPENAME LPAREN listattr . RPAREN DOUBLEPOINT typelist DELIMITER
+    (11) typedeclar -> TYPENAME LPAREN listattr . RPAREN
 
-    RPAREN          shift and go to state 33
+    RPAREN          shift and go to state 31
 
 
 state 30
+
+    (8) typedeclar -> TYPENAME LPAREN empty RPAREN . DOUBLEPOINT typelist DELIMITER
+    (9) typedeclar -> TYPENAME LPAREN empty RPAREN .
+
+    DOUBLEPOINT     shift and go to state 32
+    TYPENAME        reduce using rule 9 (typedeclar -> TYPENAME LPAREN empty RPAREN .)
+    DELIMITER       reduce using rule 9 (typedeclar -> TYPENAME LPAREN empty RPAREN .)
+
+
+state 31
+
+    (10) typedeclar -> TYPENAME LPAREN listattr RPAREN . DOUBLEPOINT typelist DELIMITER
+    (11) typedeclar -> TYPENAME LPAREN listattr RPAREN .
+
+    DOUBLEPOINT     shift and go to state 33
+    TYPENAME        reduce using rule 11 (typedeclar -> TYPENAME LPAREN listattr RPAREN .)
+    DELIMITER       reduce using rule 11 (typedeclar -> TYPENAME LPAREN listattr RPAREN .)
+
+
+state 32
 
     (8) typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT . typelist DELIMITER
     (6) typelist -> . typedeclar typelist
@@ -407,12 +410,12 @@ state 30
     (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
     (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
 
-    TYPENAME        shift and go to state 7
+    TYPENAME        shift and go to state 23
 
     typelist                       shift and go to state 34
-    typedeclar                     shift and go to state 5
+    typedeclar                     shift and go to state 22
 
-state 31
+state 33
 
     (10) typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT . typelist DELIMITER
     (6) typelist -> . typedeclar typelist
@@ -422,62 +425,37 @@ state 31
     (10) typedeclar -> . TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER
     (11) typedeclar -> . TYPENAME LPAREN listattr RPAREN
 
-    TYPENAME        shift and go to state 7
+    TYPENAME        shift and go to state 23
 
     typelist                       shift and go to state 35
-    typedeclar                     shift and go to state 5
-
-state 32
-
-    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist . DELIMITER
-
-    DELIMITER       shift and go to state 36
-
-
-state 33
-
-    (12) simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .
-
-    COMMA           reduce using rule 12 (simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .)
-    RPAREN          reduce using rule 12 (simpletypedeclar -> TYPENAME LPAREN listattr RPAREN .)
-
+    typedeclar                     shift and go to state 22
 
 state 34
 
     (8) typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist . DELIMITER
 
-    DELIMITER       shift and go to state 37
+    DELIMITER       shift and go to state 36
 
 
 state 35
 
     (10) typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist . DELIMITER
 
-    DELIMITER       shift and go to state 38
+    DELIMITER       shift and go to state 37
 
 
 state 36
 
-    (4) level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .
+    (8) typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .
 
-    LEVEL           reduce using rule 4 (level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
-    $end            reduce using rule 4 (level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
+    TYPENAME        reduce using rule 8 (typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .)
+    DELIMITER       reduce using rule 8 (typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .)
 
 
 state 37
 
-    (8) typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .
-
-    TYPENAME        reduce using rule 8 (typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .)
-    $end            reduce using rule 8 (typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .)
-    DELIMITER       reduce using rule 8 (typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER .)
-
-
-state 38
-
     (10) typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .
 
     TYPENAME        reduce using rule 10 (typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
-    $end            reduce using rule 10 (typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
     DELIMITER       reduce using rule 10 (typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER .)
 

@@ -1,7 +1,7 @@
 import pygame
 import Objects
 import Behaviour
-
+from pygame import mixer
 
 WIDTH = 800
 HEIGHT = 600
@@ -13,6 +13,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 size = 0
+
+
 
 
 class Node:
@@ -46,6 +48,8 @@ class Level:
     def __init__ (self, name = "Default", objects = []):
         self.name = name
         self.listOfObjects = objects
+
+
 
     def getName(self):
         return self.name
@@ -186,7 +190,7 @@ class Console:
             all_sprites.empty()
             all_sprites = self.add_sprites(current, pygame.sprite.Group())
 
-        return (all_sprites,current)
+        return all_sprites, current
 
     def run(self):
         pygame.mixer.init()
@@ -195,6 +199,8 @@ class Console:
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Budibak Game")
         clock = pygame.time.Clock()
+        mixer.music.load('music.mp3')
+        mixer.music.play(-1)
 
         all_sprites = pygame.sprite.Group()
 
@@ -230,6 +236,7 @@ class Console:
                 self.LevelComplete = False
 
             if self.gameOver:
+                mixer.music.stop()
                 all_sprites.empty()
                 screen.fill(BLACK)
                 font = pygame.font.Font(None, 36)

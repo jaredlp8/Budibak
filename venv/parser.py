@@ -73,6 +73,7 @@ def t_ID(t):
             t.value = False
     return t
 
+
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
@@ -123,7 +124,7 @@ def p_level(p):
 
 def p_main_expression(p):
     '''
-    P2D : typelist
+    Budibak : typelist
     '''
     print("List contains all objects. Each object has (type, list of arguments, list of objects created below if any)."
           " List of objects is recursive")
@@ -280,7 +281,8 @@ def checkAttributes(type, listOfAttributes):
 
 parser = yacc.yacc(debug=1)
 
-filename = input('Write your Level File: ')
+filename = input('Welcome to Budibak!! '
+                 'Write your Level File: ')
 
 file = open(filename, 'r')
 

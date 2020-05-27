@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOL COMMA DELIMITER DOUBLEPOINT FLOAT ID INT LEVEL LPAREN RPAREN TYPENAME WHITESPACE\n    P2D : levellist\n    \n    levellist : level levellist\n            | level\n    \n    level : LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER\n    \n    P2D : typelist\n    \n    typelist : typedeclar typelist\n            | typedeclar\n    \n    typedeclar : TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER\n                | TYPENAME LPAREN empty RPAREN\n                | TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER\n                | TYPENAME LPAREN listattr RPAREN\n    \n    simpletypedeclar : TYPENAME LPAREN listattr RPAREN\n    \n    listattr : attr COMMA listattr\n            | attr\n    \n    attr : simpletypedeclar\n        | BOOL\n        | FLOAT\n        | INT\n        | ID\n    \n   empty :\n    '
+_lr_signature = 'BOOL COMMA DELIMITER DOUBLEPOINT FLOAT ID INT LEVEL LPAREN RPAREN TYPENAME WHITESPACE\n    P2D : levellist\n    \n    levellist : level levellist\n            | level\n    \n    level : LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER\n    \n    Budibak : typelist\n    \n    typelist : typedeclar typelist\n            | typedeclar\n    \n    typedeclar : TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER\n                | TYPENAME LPAREN empty RPAREN\n                | TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER\n                | TYPENAME LPAREN listattr RPAREN\n    \n    simpletypedeclar : TYPENAME LPAREN listattr RPAREN\n    \n    listattr : attr COMMA listattr\n            | attr\n    \n    attr : simpletypedeclar\n        | BOOL\n        | FLOAT\n        | INT\n        | ID\n    \n   empty :\n    '
     
-_lr_action_items = {'LEVEL':([0,4,36,],[6,6,-4,]),'TYPENAME':([0,5,10,11,23,24,25,26,27,30,31,37,38,],[7,7,19,19,19,19,-9,-11,7,7,7,-8,-10,]),'$end':([1,2,3,4,5,8,9,25,26,36,37,38,],[0,-1,-5,-3,-7,-2,-6,-9,-11,-4,-8,-10,]),'DELIMITER':([5,9,25,26,32,34,35,37,38,],[-7,-6,-9,-11,36,37,38,-8,-10,]),'LPAREN':([6,7,19,],[10,11,24,]),'BOOL':([10,11,23,24,],[15,15,15,15,]),'FLOAT':([10,11,23,24,],[16,16,16,16,]),'INT':([10,11,23,24,],[17,17,17,17,]),'ID':([10,11,23,24,],[18,18,18,18,]),'RPAREN':([11,12,13,14,15,16,17,18,20,21,28,29,33,],[-20,22,-14,-15,-16,-17,-18,-19,25,26,-13,33,-12,]),'COMMA':([13,14,15,16,17,18,33,],[23,-15,-16,-17,-18,-19,-12,]),'DOUBLEPOINT':([22,25,26,],[27,30,31,]),}
+_lr_action_items = {'LEVEL':([0,3,25,],[4,4,-4,]),'$end':([1,2,3,5,25,],[0,-1,-3,-2,-4,]),'LPAREN':([4,14,23,],[6,17,27,]),'BOOL':([6,16,17,27,],[10,10,10,10,]),'FLOAT':([6,16,17,27,],[11,11,11,11,]),'INT':([6,16,17,27,],[12,12,12,12,]),'ID':([6,16,17,27,],[13,13,13,13,]),'TYPENAME':([6,16,17,18,22,27,30,31,32,33,36,37,],[14,14,14,23,23,14,-9,-11,23,23,-8,-10,]),'RPAREN':([7,8,9,10,11,12,13,19,20,24,27,28,29,],[15,-14,-15,-16,-17,-18,-19,-13,24,-12,-20,30,31,]),'COMMA':([8,9,10,11,12,13,24,],[16,-15,-16,-17,-18,-19,-12,]),'DOUBLEPOINT':([15,30,31,],[18,32,33,]),'DELIMITER':([21,22,26,30,31,34,35,36,37,],[25,-7,-6,-9,-11,36,37,-8,-10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'P2D':([0,],[1,]),'levellist':([0,4,],[2,8,]),'typelist':([0,5,27,30,31,],[3,9,32,34,35,]),'level':([0,4,],[4,4,]),'typedeclar':([0,5,27,30,31,],[5,5,5,5,5,]),'listattr':([10,11,23,24,],[12,21,28,29,]),'attr':([10,11,23,24,],[13,13,13,13,]),'simpletypedeclar':([10,11,23,24,],[14,14,14,14,]),'empty':([11,],[20,]),}
+_lr_goto_items = {'P2D':([0,],[1,]),'levellist':([0,3,],[2,5,]),'level':([0,3,],[3,3,]),'listattr':([6,16,17,27,],[7,19,20,29,]),'attr':([6,16,17,27,],[8,8,8,8,]),'simpletypedeclar':([6,16,17,27,],[9,9,9,9,]),'typelist':([18,22,32,33,],[21,26,34,35,]),'typedeclar':([18,22,32,33,],[22,22,22,22,]),'empty':([27,],[28,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,24 +27,24 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> P2D","S'",1,None,None,None),
-  ('P2D -> levellist','P2D',1,'p_main','parser.py',73),
-  ('levellist -> level levellist','levellist',2,'p_levellist','parser.py',91),
-  ('levellist -> level','levellist',1,'p_levellist','parser.py',92),
-  ('level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER','level',7,'p_level','parser.py',101),
-  ('P2D -> typelist','P2D',1,'p_main_expression','parser.py',110),
-  ('typelist -> typedeclar typelist','typelist',2,'p_typelist','parser.py',118),
-  ('typelist -> typedeclar','typelist',1,'p_typelist','parser.py',119),
-  ('typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER','typedeclar',7,'p_typedeclar','parser.py',128),
-  ('typedeclar -> TYPENAME LPAREN empty RPAREN','typedeclar',4,'p_typedeclar','parser.py',129),
-  ('typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER','typedeclar',7,'p_typedeclar','parser.py',130),
-  ('typedeclar -> TYPENAME LPAREN listattr RPAREN','typedeclar',4,'p_typedeclar','parser.py',131),
-  ('simpletypedeclar -> TYPENAME LPAREN listattr RPAREN','simpletypedeclar',4,'p_simpletypedeclar','parser.py',142),
-  ('listattr -> attr COMMA listattr','listattr',3,'p_list_attr','parser.py',160),
-  ('listattr -> attr','listattr',1,'p_list_attr','parser.py',161),
-  ('attr -> simpletypedeclar','attr',1,'p_attr','parser.py',170),
-  ('attr -> BOOL','attr',1,'p_attr','parser.py',171),
-  ('attr -> FLOAT','attr',1,'p_attr','parser.py',172),
-  ('attr -> INT','attr',1,'p_attr','parser.py',173),
-  ('attr -> ID','attr',1,'p_attr','parser.py',174),
-  ('empty -> <empty>','empty',0,'p_empty','parser.py',180),
+  ('P2D -> levellist','P2D',1,'p_main','parser.py',87),
+  ('levellist -> level levellist','levellist',2,'p_levellist','parser.py',106),
+  ('levellist -> level','levellist',1,'p_levellist','parser.py',107),
+  ('level -> LEVEL LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER','level',7,'p_level','parser.py',117),
+  ('Budibak -> typelist','Budibak',1,'p_main_expression','parser.py',127),
+  ('typelist -> typedeclar typelist','typelist',2,'p_typelist','parser.py',136),
+  ('typelist -> typedeclar','typelist',1,'p_typelist','parser.py',137),
+  ('typedeclar -> TYPENAME LPAREN empty RPAREN DOUBLEPOINT typelist DELIMITER','typedeclar',7,'p_typedeclar','parser.py',147),
+  ('typedeclar -> TYPENAME LPAREN empty RPAREN','typedeclar',4,'p_typedeclar','parser.py',148),
+  ('typedeclar -> TYPENAME LPAREN listattr RPAREN DOUBLEPOINT typelist DELIMITER','typedeclar',7,'p_typedeclar','parser.py',149),
+  ('typedeclar -> TYPENAME LPAREN listattr RPAREN','typedeclar',4,'p_typedeclar','parser.py',150),
+  ('simpletypedeclar -> TYPENAME LPAREN listattr RPAREN','simpletypedeclar',4,'p_simpletypedeclar','parser.py',162),
+  ('listattr -> attr COMMA listattr','listattr',3,'p_list_attr','parser.py',181),
+  ('listattr -> attr','listattr',1,'p_list_attr','parser.py',182),
+  ('attr -> simpletypedeclar','attr',1,'p_attr','parser.py',192),
+  ('attr -> BOOL','attr',1,'p_attr','parser.py',193),
+  ('attr -> FLOAT','attr',1,'p_attr','parser.py',194),
+  ('attr -> INT','attr',1,'p_attr','parser.py',195),
+  ('attr -> ID','attr',1,'p_attr','parser.py',196),
+  ('empty -> <empty>','empty',0,'p_empty','parser.py',202),
 ]
